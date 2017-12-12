@@ -49,9 +49,25 @@ int main()
 		int n;
 		cin>>n;
 		for(int i=0; i<n; i++)
+		{
 			cin>>j[i].a>>j[i].b;
+			if(j[i].a>j[i].b)
+				swap(j[i].a, j[i].b);
+		}
 		sort(j,j+n,cmp);
-
+		juzheng dp[1001];
+		dp[0]=j[0];
+		int sum=1;
+		for(int i=1; i<n; i++)
+		{
+			if(j[i].a>dp[0].a && j[i].b>dp[0].b)
+			{
+				dp[0]=j[i];
+				sum++;
+			}
+		}
+		cout<<sum<<endl;
 	}
+	system("pause");
 	return 0;
 }
