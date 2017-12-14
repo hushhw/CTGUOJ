@@ -20,3 +20,59 @@
 // 	Êä³öÑùÀý
 // 	15
 // 	1 1 0 0 1
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct ball 
+{
+	int w,m;
+};
+
+int main()
+{
+	int n,C;
+	ball a[101];
+	int dp[101][101];
+	int x[101];
+	while(scanf("%d%d",&n,&C)!=EOF)
+	{
+		for(int i=0; i<n; i++)
+			cin>>a[i].w;
+		for(int i=0; i<n; i++)
+			cin>>a[i].m;
+		memset(dp,0,sizeof(dp));
+		memset(x,0,sizeof(x));
+		for(int i=1; i<=n; i++)
+		{
+			for(int j=C; j>=a[i-1].w; j--)
+			{
+				if(dp[i-1][j] < (dp[i-1][j - a[i-1].w] + a[i-1].m))
+				{
+					dp[i][j] = dp[i-1][j - a[i-1].w] + a[i-1].m;
+					//cout<<"j:"<<j<<" "<<"i:"<<i<<" "<<"dp[i-1][j - a[i-1].w]:"<<dp[i-1][j - a[i-1].w]<<" "<<"dp[i][j]:"<<dp[i][j]<<endl;
+				}
+				else
+					dp[i][j] = dp[i-1][j];
+			}
+		}
+		cout<<dp[n][C]<<endl;
+		for(int i=n; i>0; i--)
+		{
+			if(dp[i][C]>dp[i-1][C])
+			{
+				x[i-1]=1;
+				C -= a[i-1].w;
+			}
+		}
+		for(int j=0; j<n; j++)
+		{
+			cout<<x[j];
+			if(j!=n-1)
+				cout<<" ";
+		}
+		cout<<endl;
+	}
+	return 0;
+}
