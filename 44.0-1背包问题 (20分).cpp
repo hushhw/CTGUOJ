@@ -46,16 +46,15 @@ int main()
 		memset(x,0,sizeof(x));
 		for(int i=1; i<=n; i++)
 		{
-			for(int j=C; j>=a[i-1].w; j--)
+			for(int j=0; j<=C; j++)
 			{
-				if(dp[i-1][j] < (dp[i-1][j - a[i-1].w] + a[i-1].m))
-				{
-					dp[i][j] = dp[i-1][j - a[i-1].w] + a[i-1].m;
-					//cout<<"j:"<<j<<" "<<"i:"<<i<<" "<<"dp[i-1][j - a[i-1].w]:"<<dp[i-1][j - a[i-1].w]<<" "<<"dp[i][j]:"<<dp[i][j]<<endl;
-				}
-				else
+				if(i!=1)
 					dp[i][j] = dp[i-1][j];
+				if(j>=a[i-1].w)
+				dp[i][j] = dp[i-1][j] > (dp[i-1][j - a[i-1].w] + a[i-1].m) ? dp[i-1][j] : (dp[i-1][j - a[i-1].w] + a[i-1].m);		
+				cout<<dp[i][j]<<" ";
 			}
+			cout<<endl;
 		}
 		cout<<dp[n][C]<<endl;
 		for(int i=n; i>0; i--)
@@ -68,11 +67,8 @@ int main()
 		}
 		for(int j=0; j<n; j++)
 		{
-			cout<<x[j];
-			if(j!=n-1)
-				cout<<" ";
+			cout<<x[j]<<" ";
 		}
-		cout<<endl;
 	}
 	return 0;
 }
