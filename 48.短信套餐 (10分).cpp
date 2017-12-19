@@ -29,6 +29,7 @@
 #include <string>
 using namespace std;
 
+/*
 int main()
 {
 	int n,m;
@@ -56,3 +57,40 @@ int main()
 	}
 	return 0;
 }
+*/
+
+int main(){  
+	int m,i,n,count=0;  
+	float z,s,sum[100]={0},min;  
+	float a[100],b[100],x[100]={0.0};  
+
+	while(cin>>m&&m!=00){  
+		cin>>n;  
+		cin>>z;  
+
+		//int *sum=new int[m]();//int sum[m];  
+		//int *a=new int [m]();  
+		//int *b=new int [m]();  
+		for(i=0;i<m;i++){  
+			cin>>a[i];  
+			cin>>b[i];  
+		}  
+		for(i=0;i<m;i++){  
+			s=0;  
+			if(b[i]<n)  
+				s=a[i]+(n-b[i])*z;  
+			else  
+				s=a[i];  
+			sum[i]=s;  
+		}  
+		min=sum[0];  
+		for(i=0;i<m;i++)  
+			if(sum[i]<min)  
+				min=sum[i];   
+
+		x[count++]=min;  
+	}  
+	for(i=0;i<count;i++)  
+		printf("%.2f\n",x[i]);  
+	return 0;  
+}  

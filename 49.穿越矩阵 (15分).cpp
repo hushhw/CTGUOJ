@@ -22,3 +22,76 @@
 // 	输出样例
 // 	1 2 1 5 4 5
 // 	11
+#include <cstdio>  
+#include <string>  
+#include <iostream>  
+using namespace std;  
+int a[11][101],dp[11][101];  
+int num[101];  
+
+int main()  
+{  
+	int m,n;  
+	while(scanf("%d%d",&m,&n)!=EOF)  
+	{  
+		for(int i=0;i<m;i++)  
+			for(int j=0;j<n;j++)  
+				cin>>a[i][j];  
+		memset(dp,0,sizeof(dp));  
+		for(int i=0; i<m; i++)  
+			dp[i][n-1] = a[i][n-1];  
+		for(int j=n-2; j>=0; j--)  
+		{  
+			for(int i=0; i<m; i++)  
+			{  
+				dp[i][j] = a[i][j];  
+				if(i>0 && i<m-1)  
+					dp[i][j] += min(min(dp[i][j+1],dp[i+1][j+1]),dp[i-1][j+1]);  
+				else if(i==0)  
+					dp[i][j] += min(min(dp[i][j+1],dp[i+1][j+1]),dp[m-1][j+1]);  
+				else if(i==m-1)  
+					dp[i][j] += min(min(dp[i][j+1],dp[ 0 ][j+1]),dp[i-1][j+1]);  
+				//  cout<<dp[i][j]<<" ";  
+			}  
+			//  cout<<endl;  
+		}  
+		int mini, mine = dp[m-1][0];  
+		for(int i=m-1; i>=0; i--)  
+		{  
+			if(mine >= dp[i][0])  
+			{  
+				mine = dp[i][0];  
+				mini = i;  
+			}  
+		}
+		memset(num,0,sizeof(num));  
+		num[0] = mini;  
+		for(int j=1; j<n; j++)  
+		{  
+			int flag = 0;  
+			for(int i=0; i<m; i++)  
+			{  
+				if(mini==0 && i!=0 && i!=1 && i!=m-1)  
+					continue;  
+				if(mini==m-1 && i!=m-1 && i!=m-2 && i!=0)  
+					continue;  
+				if(mini>0 && mini<m-1 && i!=mini && i!=mini+1 && i!=mini-1)  //前三段cintinue是为了保证，后面三个数字是在上下和对应的位置
+					continue;  
+				if(dp[mini][j-1] - a[mini][j-1]==dp[i][j])  
+				{  
+					mini = i;  
+					num[j] =mini;  
+					flag =1;  
+				}  
+				if(flag)  
+					break;  
+			}  
+		}  
+		cout<<num[0]+1;  
+		for(int j=1;j<n;j++)  
+			cout<<" "<<num[j]+1;  
+		cout<<endl;  
+		cout<<mine<<endl;  
+	}  
+	return 0;  
+}   
