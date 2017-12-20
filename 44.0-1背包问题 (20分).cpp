@@ -52,9 +52,9 @@ int main()
 					dp[i][j] = dp[i-1][j];
 				if(j>=a[i-1].w)
 				dp[i][j] = dp[i-1][j] > (dp[i-1][j - a[i-1].w] + a[i-1].m) ? dp[i-1][j] : (dp[i-1][j - a[i-1].w] + a[i-1].m);		
-				cout<<dp[i][j]<<" ";
+				//cout<<dp[i][j]<<" ";
 			}
-			cout<<endl;
+			//cout<<endl;
 		}
 		cout<<dp[n][C]<<endl;
 		for(int i=n; i>0; i--)
@@ -69,6 +69,7 @@ int main()
 		{
 			cout<<x[j]<<" ";
 		}
+		cout<<endl;
 	}
 	return 0;
 }

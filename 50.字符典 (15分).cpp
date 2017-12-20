@@ -172,8 +172,14 @@ int calculate(string s)
 }
 int main()
 {
-	string s;
-	cin>>s;
-	cout<<calculate(s);
+	int n;
+	cin>>n;
+	while(n--)
+	{
+		string s;
+		cin>>s;
+		cout<<calculate(s)<<endl;
+	}
+	
 	return 0;
 }
