@@ -20,13 +20,252 @@
 	// 
 	// 	输出样例
 	// 	4
+#include<stdio.h>  
+#include<string.h>  
+#include<iostream>  
+#include<queue>  
+
+using namespace std;  
+
+typedef struct{  
+	char str[15];  
+	int pos;  
+	int step;  
+}node;  
+
+int vis[370000], f[10] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320};  
+char des[15] = "123804765";  
+
+int bfs(char str[]);  
+int cantor(char str[]);  
+int main(){  
+	char str[15];  
+
+	scanf("%s", str);  
+	printf("%d\n", bfs(str));  
+	return 0;  
+}  
+
+int bfs(char str[]){  
+	node q, p;  
+	queue <node> Q;  
+	int i, pos;  
+
+	strcpy(p.str, str);  
+	for(i = 0; i < 9; i++){  
+		if(str[i] == '0'){  
+			p.pos = i;  
+			break;  
+		}  
+	}  
+	p.step = 0;  
+	vis[cantor(p.str)] = 1;  
+	Q.push(p);  
+
+	while(!Q.empty()){  
+		q = Q.front();  
+		Q.pop();  
+		//  printf("pop:%s\n", q.str);  
+		//  getchar();  
+		if(!strcmp(q.str, des))  
+			return q.step;  
+
+		for(i = 0; i < 9; i++){  
+			if(q.str[i] == '0'){  
+				pos = i;  
+				break;  
+			}  
+		}  
+
+		if(pos > 2){  
+			strcpy(p.str, q.str);  
+			swap(p.str[pos], p.str[pos - 3]);  
+			p.pos = pos - 3;  
+			p.step = q.step + 1;  
+			if(!vis[cantor(p.str)]){  
+				Q.push(p);  
+				vis[cantor(p.str)] = 1;  
+			}  
+		}  
+
+		if(pos < 6){  
+			strcpy(p.str, q.str);  
+			swap(p.str[pos], p.str[pos + 3]);  
+			p.pos = pos + 3;  
+			p.step = q.step + 1;  
+			if(!vis[cantor(p.str)]){  
+				Q.push(p);  
+				vis[cantor(p.str)] = 1;  
+			}  
+		}  
+
+		if(pos % 3){  
+			strcpy(p.str, q.str);  
+			swap(p.str[pos], p.str[pos - 1]);  
+			p.pos = pos - 1;  
+			p.step = q.step + 1;  
+			if(!vis[cantor(p.str)]){  
+				Q.push(p);  
+				vis[cantor(p.str)] = 1;  
+			}  
+		}  
+
+		if(pos % 3 != 2){  
+			strcpy(p.str, q.str);  
+			swap(p.str[pos], p.str[pos + 1]);  
+			p.pos = pos + 1;  
+			p.step = q.step + 1;  
+			if(!vis[cantor(p.str)]){  
+				Q.push(p);  
+				vis[cantor(p.str)] = 1;  
+			}  
+		}  
+	}  
+}  
+
+int cantor(char str[]){  
+	int i, j, ans, temp;  
+	int record[15];  
+
+	memset(record, 0, sizeof(record));  
+	ans = 1;  
+	for(i = 0; i < 9; i++){  
+		temp = 0;  
+		for(j = '0'; j < str[i]; j++){  
+			if(!record[j - '0']){  
+				temp++;  
+			}  
+		}  
+		record[str[i] - '0'] = 1;  
+		ans += temp * f[8 - i];  
+	}  
+
+	return ans;  
+}  
+/*
+//错误版本
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+int num;
+int temp;
+int loc;	//标记0所在位置
+
+struct node 
+{
+	int xy[3][3];
+	int dir;
+};
+struct node sh;
+
+void search(long long s_sum, int s_dir)
+{
+	for (int i = 0; i < 9; i++)
+		if (sh.xy[i / 3][i % 3] == 0) 
+			loc = i;
+	if(s_sum == 123804765)
+	{
+		num++;
+		return ;
+	}
+	else
+	{
+		int stand = s_dir;
+		//dir的0 1 2 3分别代表左 上 右 下
+		if (loc / 3 != 0 && stand != 1)
+		{
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3-1][loc%3];
+			sh.xy[loc/3-1][loc%3] = temp;
+			num++;
+			int dir_num = s_dir;
+			s_dir=3;
+			s_sum = sh.xy[0][0]*100000000 + sh.xy[0][1]*10000000 + sh.xy[0][2]*1000000 + sh.xy[1][0]*100000 + sh.xy[1][1]*10000 + sh.xy[1][2]*1000 + sh.xy[2][0]*100 + sh.xy[2][1]*10 + sh.xy[2][2];
+			search(s_sum, s_dir);
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3-1][loc%3];
+			sh.xy[loc/3-1][loc%3] = temp;
+			s_dir=dir_num;
+			num--;
+		}
+		if (loc / 3 != 2 && stand != 3)
+		{
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3+1][loc%3];
+			sh.xy[loc/3+1][loc%3] = temp;
+			num++;
+			int dir_num = s_dir;
+			s_dir=1;
+			s_sum = sh.xy[0][0]*100000000 + sh.xy[0][1]*10000000 + sh.xy[0][2]*1000000 + sh.xy[1][0]*100000 + sh.xy[1][1]*10000 + sh.xy[1][2]*1000 + sh.xy[2][0]*100 + sh.xy[2][1]*10 + sh.xy[2][2];
+			search(s_sum, s_dir);
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3+1][loc%3];
+			sh.xy[loc/3+1][loc%3] = temp;
+			s_dir=dir_num;
+			num--;
+		}
+		if (loc % 3 != 0 && stand != 0)
+		{
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3][loc%3-1];
+			sh.xy[loc/3][loc%3-1] = temp;
+			num++;
+			int dir_num = s_dir;
+			s_dir=2;
+			s_sum = sh.xy[0][0]*100000000 + sh.xy[0][1]*10000000 + sh.xy[0][2]*1000000 + sh.xy[1][0]*100000 + sh.xy[1][1]*10000 + sh.xy[1][2]*1000 + sh.xy[2][0]*100 + sh.xy[2][1]*10 + sh.xy[2][2];
+			search(s_sum, s_dir);
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3][loc%3-1];
+			sh.xy[loc/3][loc%3-1] = temp;
+			s_dir=dir_num;
+			num--;
+		}
+		if (loc % 3 != 2 && stand != 2)
+		{
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3][loc%3+1];
+			sh.xy[loc/3][loc%3+1] = temp;
+			num++;
+			int dir_num = s_dir;
+			s_dir=0;
+			s_sum = sh.xy[0][0]*100000000 + sh.xy[0][1]*10000000 + sh.xy[0][2]*1000000 + sh.xy[1][0]*100000 + sh.xy[1][1]*10000 + sh.xy[1][2]*1000 + sh.xy[2][0]*100 + sh.xy[2][1]*10 + sh.xy[2][2];
+			search(s_sum, s_dir);
+			temp = sh.xy[loc/3][loc%3];
+			sh.xy[loc/3][loc%3] = sh.xy[loc/3][loc%3+1];
+			sh.xy[loc/3][loc%3+1] = temp;
+			s_dir=dir_num;
+			num--;
+		}
+	}
+	
+}
+
+int main()
+{
+	num=0;
+	for(int i=0; i<3; i++)
+		for(int j=0; j<3; j++)
+		{
+			cin>>sh.xy[i][j];
+		}
+	sh.dir=-1;
+	search(0, sh.dir);
+	cout<<num<<endl;
+	return 0;
+}
+*/
+
+/*
 #include <cstdio>
 #include <iostream>
 #include <string>
 #include <cstring>
 using namespace std;
 
-int count=1;
+int count1=1;
 
 struct node 
 {
@@ -52,11 +291,15 @@ void init()
 }
 
 //找出0的位置
-int loction(int num)
+int location(int num)
 {
 	int i;
 	for (i = 0; i < 9; i++)
-		if (sh[num].xy[i / 3][i % 3] == 0) return i;
+		if (sh[num].xy[i / 3][i % 3] == 0) 
+		{
+			cout<<"i:"<<i<<endl;
+			return i;
+		}
 }
 
 //进行标记
@@ -72,44 +315,44 @@ void mobile(int num)
 	int temp;
 	int loc;
 	int up=1,down=1,left=1,right=1;
-	loc = loction(num);
+	loc = location(num);
 	int stand = sh[num].dir;
 	//dir的0 1 2 3分别代表左 上 右 下
 	if (loc / 3 != 0 && stand != 1)
 	{
-		sh[count] = sh[num];
-		temp = sh[count].xy[loc / 3][loc % 3];
-		sh[count].xy[loc / 3][loc % 3] = sh[count].xy[loc / 3 - 1][loc % 3];
-		sh[count].xy[loc / 3 - 1][loc % 3] = temp;
-		sh[count].dir = 3;
-		count++;
+		sh[count1] = sh[num];
+		temp = sh[count1].xy[loc / 3][loc % 3];
+		sh[count1].xy[loc / 3][loc % 3] = sh[count1].xy[loc / 3 - 1][loc % 3];
+		sh[count1].xy[loc / 3 - 1][loc % 3] = temp;
+		sh[count1].dir = 3;
+		count1++;
 	};
 	if (loc / 3 != 2 && stand != 3)
 	{
-		sh[count] = sh[num];
-		temp = sh[count].xy[loc / 3][loc % 3];
-		sh[count].xy[loc / 3][loc % 3] = sh[count].xy[loc / 3 + 1][loc % 3];
-		sh[count].xy[loc / 3 + 1][loc % 3] = temp;
-		sh[count].dir = 1;
-		count++;
+		sh[count1] = sh[num];
+		temp = sh[count1].xy[loc / 3][loc % 3];
+		sh[count1].xy[loc / 3][loc % 3] = sh[count1].xy[loc / 3 + 1][loc % 3];
+		sh[count1].xy[loc / 3 + 1][loc % 3] = temp;
+		sh[count1].dir = 1;
+		count1++;
 	}
 	if (loc % 3 != 0 && stand != 0)
 	{
-		sh[count] = sh[num];
-		temp = sh[count].xy[loc / 3][loc % 3];
-		sh[count].xy[loc / 3][loc % 3] = sh[count].xy[loc / 3][loc % 3 - 1];
-		sh[count].xy[loc / 3][loc % 3 - 1] = temp;
-		sh[count].dir = 2;
-		count++;
+		sh[count1] = sh[num];
+		temp = sh[count1].xy[loc / 3][loc % 3];
+		sh[count1].xy[loc / 3][loc % 3] = sh[count1].xy[loc / 3][loc % 3 - 1];
+		sh[count1].xy[loc / 3][loc % 3 - 1] = temp;
+		sh[count1].dir = 2;
+		count1++;
 	}
 	if (loc % 3 != 2 && stand != 2)
 	{
-		sh[count] = sh[num];
-		temp = sh[count].xy[loc / 3][loc % 3];
-		sh[count].xy[loc / 3][loc % 3] = sh[count].xy[loc / 3][loc % 3 + 1];
-		sh[count].xy[loc / 3][loc % 3 + 1] = temp;
-		sh[count].dir = 0;
-		count++;
+		sh[count1] = sh[num];
+		temp = sh[count1].xy[loc / 3][loc % 3];
+		sh[count1].xy[loc / 3][loc % 3] = sh[count1].xy[loc / 3][loc % 3 + 1];
+		sh[count1].xy[loc / 3][loc % 3 + 1] = temp;
+		sh[count1].dir = 0;
+		count1++;
 	}
 }
 
@@ -152,5 +395,7 @@ int main()
 {
 	init();
 	search();
+	system("pause");
 	return 0;
 }
+*/

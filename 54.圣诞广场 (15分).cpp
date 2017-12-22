@@ -13,7 +13,7 @@
 	// 	输入描述
 	// 	本题有多组数据，第一行N, M，M是边的数量,以后M行，每行3个整数X, Y, Weight，代表一条从X
 	// 
-	// 	城市到Y城市，长度为Wweight的边。
+	// 	城市到Y城市，长度为Weight的边。
 	// 
 	// 	输出描述
 	// 	每组数据，第一行是最少时间，第二行是最迟时间，要是可怜的Angel可能永远到不了广场，输
@@ -31,3 +31,33 @@
 	// 	输出样例
 	// 	4
 	// 	11
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+	int N,M;
+	cin>>N>>M;
+	int x,y,w;
+	int inf = 99999999;
+	int num[101][101];
+	for(int i=1; i<=N; i++)
+	{
+		for(int j=1; j<N; j++)
+		{
+			if(i==j)
+				num[i][j]=0;
+			else
+				num[i][j]=inf;
+		}
+	}
+	for(int i=0; i<M; i++)
+	{
+		cin>>x>>y>>w;
+		num[x][y]=w;
+	}
+
+	return 0;
+}
