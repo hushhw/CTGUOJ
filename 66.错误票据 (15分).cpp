@@ -62,3 +62,132 @@
 	// 
 	// 	输出样例
 	// 	7 9
+
+//此题最重要的是对数据的处理，怎么输入和合理存储
+/*
+#include <cstdio>
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+char ch[1010][10100];
+int num[101000];
+
+int main()
+{
+	int n,k;
+	while(scanf("%d",&n)!=EOF)
+	{
+		k=0;
+		getchar();
+		for(int i=0; i<n; i++)
+		{
+			gets(ch[i]);
+			int len=0;
+			while(ch[i][len]!='\0') len++;
+			cout<<len<<endl;
+			int a=0;
+			while(ch[i][len-1]==' ') len--;
+			
+			for(int j=0; j<len; j++)
+			{
+				if(ch[i][j]>='0' && ch[i][j]<='9')
+				{
+					a=a*10+ch[i][j]-'0';
+				}
+				if(ch[i][j]==' ' && ch[i][j-1]!=' ')
+				{
+					num[k++]=a;
+					a=0;
+				}
+			}
+			num[k++]=a;
+		}
+		sort(num,num+k);
+		int flag = 0;
+		for(int i=1; i<k; i++)
+		{
+			if(num[i]>num[i-1]+1)
+			{
+				cout<<num[i]-1<<" ";
+			}
+		}
+		for(int i=1; i<k; i++)
+		{
+			if(num[i]==num[i-1])
+			{
+				cout<<num[i]<<endl;
+			}
+		}
+	}
+	return 0;
+}
+*/
+
+//解法二：
+
+// atoi()函数
+// 	atoi():int atoi(const char *str );
+// 功能：把字符串转换成整型数。
+// 	str：要进行转换的字符串
+// 	返回值：每个函数返回 int 值，此值由将输入字符作为数字解析而生成。 如果该输入无法转换为该类型的值，则atoi的返回值为 0。
+// 	说明：当第一个字符不能识别为数字时，函数将停止读入输入字符串。
+
+//解题思路：
+// 因为每行数据都不一样，所以需要根据输入的字符来判断是否输入完毕（当然，也可每行作为一个string，然后进行分割），所以需要使用getchar函数；
+// 	这就出现了一个问题，当我们输入123等多个数字组成的数的时候，分3次输入的，所以我们还需要自己想办法合并；
+// 	我这里使用的是string来实现的，str一开始是空，当遇到空格之前的数字都是连在一块的，所以我们将他们通过string的+运算符连接到一块；
+// 	然后在将这一string通过c_str函数转换为char型，然后通过atoi函数（在cstdlib类库中定义）将这一字符串转化为整数，并插入链表；
+#include <cstdio>
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <list>
+using namespace std;
+
+int main()
+{
+	list<int> l;
+	int row;
+	int c;
+	int num;
+	string str = "";
+	cin>>row;
+	getchar(); //防止输入行数的回车被识别
+	for(int i=0; i<row; i++)
+	{
+		while(c=getchar())
+		{
+			if(c==32) //32是空格的ascii码
+			{
+				num = atoi(str.c_str());	//注意atoi()函数内只能为char型，所以要用到c_str()来转换类型
+				l.push_back(num);
+				str = "";
+				continue; //防止空格被记录在str中
+			}
+			if(c==10) //10是回车的acsii码
+			{
+				num = atoi(str.c_str());
+				l.push_back(num);
+				str = "";
+				break;
+			}
+			str += c;	//用来记录输入的连续的数如：123
+		}
+	}
+	l.sort();
+	list<int>::iterator p;
+	int m;	//表示断号
+	int n;	//表示重号
+	for(p=l.begin(); p!=--l.end();)
+	{
+		int t1 = *p;
+		int t2 = *(++p);
+		int t3 = t2-t1;
+		if(t3==0) n=t1;
+		if(t3==2) m=t2-1;
+	}
+	cout<<m<<" "<<n<<endl;
+	return 0;
+}

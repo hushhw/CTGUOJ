@@ -23,3 +23,94 @@
 	// 	dependencies and XML
 	// 	keys are        also
 	// 	discussed
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+	string str;
+	string s[101];
+	int len[101];
+	char c;
+	getchar();
+	int i=0;
+	while(c = getchar())
+	{
+		
+		if(c=='\n')
+		{
+			s[i++] = str;
+			len[i] = str.length();
+			str = "";
+			cout<<s[i]<<endl;
+			break;
+		}
+		if(c==' ')
+		{
+			s[i++] = str;
+			len[i] = str.length();
+			str = "";
+			cout<<s[i]<<endl;
+			continue;
+		}
+		str += c;
+	}
+	s[i++] = str;
+	len[i] = str.length();
+
+	int num = 0;
+	for(int j=0; i<i; j++)
+	{
+		num+=len[i];
+		if(num==20)
+		{
+			int sum = 0;
+			for(int m=0; m<=j; m++)
+			{
+				if(m!=j)
+				{
+					cout<<"sss"<<endl;
+					printf("%s",s[i]);
+					sum += len[i]+1;
+				}
+				else
+				{
+					int sum = 20 - sum;
+					while(sum)
+					{
+						cout<<" ";
+						sum--;
+					}
+					printf("%s\n",s[i]);
+				}
+			}
+		}
+		else if(num>20)
+		{
+			int sum = 0;
+			for(int m=0; m<j; m++)
+			{
+				if(m!=j-1)
+				{
+					cout<<"sss"<<endl;
+					printf("%s",s[i]);
+					sum += len[i]+1;
+				}
+				else
+				{
+					int sum = 20 - sum;
+					while(sum)
+					{
+						cout<<" ";
+						sum--;
+					}
+					printf("%s\n",s[i]);
+				}
+			}
+		}	
+	}
+	system("pause");
+	return 0;
+}
