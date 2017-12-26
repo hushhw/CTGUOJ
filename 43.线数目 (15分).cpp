@@ -29,37 +29,46 @@
 
 #include <cstdio>
 #include <iostream>
-#include <string>
+#include <cstring>
 using namespace std;
 
+int map[100][100];
+int value[20];
 int w,h;
-string str[101];
-
-int dfs(int x,int y)
-{
-	if(x>=w && y>=h)
-	{
-
-	}
-	else
-	{
-		if(str[x][y]=='1')
-		{
-
-		}
+int find(int i,int j){
+	if(map[i][j]==1){
+		map[i][j]=0;
+		return find(i-1,j-1)+find(i-1,j)+
+			find(i-1,j+1)+find(i,j-1)+
+			find(i,j+1)+find(i+1,j-1)+
+			find(i+1,j)+find(i+1,j+1)+1;
+	}else{
+		return 0;
 	}
 }
 
-int main()
-{
-	
-	while(scanf("%d%d",&w,&h)!=EOF)
-	{
-		for(int i=0; i<h; i++)
+int main(){
+	int count=0;
+	memset(map,0,sizeof(map));//全部赋值为零
+	memset(value,0,sizeof(value));
+	cin>>w>>h;
+	for(int i=1;i<=h;i++)
+		for(int j=1;j<=w;j++)
+			cin>>map[i][j];
+	int k=0;
+	for(int i=1;i<=h;i++)
+		for(int j=1;j<=w;j++)
 		{
-			cin>>str[i];
+
+			int sum=find(i,j);
+			if(sum!=0){
+				count++;
+				value[k++]=sum;
+			}
 		}
-		dfs(0,0);
-	}
-	return 0;
+
+		cout<<count<<endl;
+		for(int i=0;i<count;i++)
+			cout<<value[i]<<endl;        
+		return 0;
 }

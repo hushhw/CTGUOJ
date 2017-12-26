@@ -31,33 +31,97 @@
 	// 	输出样例
 	// 	4
 	// 	11
-#include <cstdio>
 #include <iostream>
-#include <string>
+#include <cstring>
+#define INFINITE  10000000
 using namespace std;
+int n, m;         //n个点，m条路
+int a[100][100];  //权值矩阵 
+int dist[100];    //距离 
+int pre[100];
 
-int main()
-{
-	int N,M;
-	cin>>N>>M;
-	int x,y,w;
-	int inf = 99999999;
-	int num[101][101];
-	for(int i=1; i<=N; i++)
-	{
-		for(int j=1; j<N; j++)
-		{
-			if(i==j)
-				num[i][j]=0;
-			else
-				num[i][j]=inf;
+int  pathDijkstra(int n, int s){  //s为源点 
+	int i, j, k, count;
+	int boolInA[100];
+	int minpnt, mindis;
+	for(int i = 1; i <= n; i++){
+		dist[i] = a[s][i];
+		pre[i] = s;
+		boolInA[i] = 0;
+	} 
+	boolInA[s] = 1;
+	for(count = 1; count <= n; count++){
+		mindis = INFINITE;
+		for(i = 1; i <= n; i++){
+			if(!boolInA[i] && mindis > dist[i]){
+				mindis = dist[i];
+				minpnt = i;
+			}
+		}
+		boolInA[minpnt] = 1;
+		for(int i = 1; i <= n; i++)
+			if(!boolInA[i] && dist[i] > dist[minpnt] + a[minpnt][i]){
+				dist[i] = dist[minpnt] + a[minpnt][i];
+				pre[i] = minpnt;
+			}
+	}
+	cout << dist[5] << endl;
+	return 1;
+}
+int  fpathDijkstra(int n, int s){  //s为源点  水过的 *^_^* 
+	int i, j, k, count;
+	int boolInA[100];
+	int minpnt, mindis;
+	for(int i = 1; i <= n; i++){
+		dist[i] = a[s][i];
+		pre[i] = s;
+		boolInA[i] = 0;
+	} 
+	boolInA[s] = 1;
+	for(count = 1; count <= n; count++){
+		mindis = -1;
+		for(i = 1; i <= n; i++){
+			if(!boolInA[i] && mindis <= dist[i]){    //加了个= 
+				mindis = dist[i];
+				minpnt = i;
+			}
+		}
+		boolInA[minpnt] = 1;
+		for(int i = 1; i <= n; i++)
+			if(!boolInA[i] && dist[i] < dist[minpnt] + a[minpnt][i]){
+				dist[i] = dist[minpnt] + a[minpnt][i];
+				pre[i] = minpnt;
+			}
+	}
+	cout << dist[5] << endl;
+	return 1;
+} 
+
+int main(){
+	cin >> n >> m;
+	int x, y, v;
+	//  int j;
+	for(int i = 1; i <= n; i++){
+		for(int j = 1; j <= n; j++){
+			a[i][j] = INFINITE;
+			if(i == j)
+				a[i][i] = 0;        
+		}
+	} 
+	for(int i = 1; i <= m; i++){
+		cin >> x >> y >> v;
+		a[x][y] = v;
+	}
+	pathDijkstra(n, 1);
+	for(int i = 1; i <= n; i++){
+		for(int j = 1; j <= n; j++){
+			if(a[i][j] == INFINITE)
+				a[i][j] = -1;       
 		}
 	}
-	for(int i=0; i<M; i++)
-	{
-		cin>>x>>y>>w;
-		num[x][y]=w;
-	}
+	fpathDijkstra(n, 1);
+	//  for(int i = 1; i <= n; i++)
+	//      cout << dist[i] << " ";
 
 	return 0;
 }

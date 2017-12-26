@@ -36,9 +36,9 @@ void copy(int n)
 {
 	int i,j;
 	int m = n/2;
-	for(  i = 0 ; i < m ; i++ )
+	for(  i = 1 ; i <= m ; i++ )
 	{
-		for(  j = 0 ; j < m ; j++ )
+		for(  j = 1 ; j <= m ; j++ )
 		{
 			a[i][j + m] = a[i][j] + m;
 			a[i + m][j] = a[i][j + m];
@@ -50,16 +50,16 @@ void copy(int n)
 void copyodd(int n)
 {      
 	int m=n/2,b[100],i,j;
-	for (  i = 0 ; i < m ; i++ )
+	for (  i = 1 ; i <= m ; i++ )
 	{
 		b[i]=m+i;
 		b[m+i]=b[i];
 	}
 
-	for(  i = 0 ; i < m ; i++ )
+	for(  i = 1 ; i <= m ; i++ )
 	{
-		for (  j = 0 ; j < m+1 ; j++ )
-		{	
+		for (  j = 1 ; j <= m+1 ; j++ )
+		{   
 			if (a[i][j]>=m)
 			{ 
 				a[i][j]=b[i];
@@ -68,7 +68,7 @@ void copyodd(int n)
 			else
 				a[m+i][j]=a[i][j]+m;
 		}
-		for (  j = 1 ; j < m ; j++ )
+		for (  j = 2 ; j <= m ; j++ )
 		{
 			a[i][m+j]=b[i+j];
 			a[b[i+j]][m+j]=i;
@@ -119,29 +119,31 @@ int main()
 			num=n-1;
 		else
 			num=n;
-// 		for( i = 0; i<=num; i++)
-// 		{
-// 			if(i==0)
-// 				printf("0");
-// 			else
-// 				printf("%3d",i);
-// 		}
-// 		cout<<endl;
-		for(  i = 0 ; i <= num ; i++ )
+		for( i = 0; i<=num; i++)
 		{
-			for(  j = 0 ; j <= num ; j++ )
+			if(i==0)
+				printf("0");
+			else
+				printf("%3d",i);
+		}
+		cout<<endl;
+
+		for(  i = 1 ; i <= n ; i++ )
+		{
+			//printf("%d",i);
+			for(  j = 1 ; j <= num+1 ; j++ )
 			{
 				if(a[i][j]>n)
 					a[i][j]=0;
-				if(j==0)
-					printf("%d", a[i][j]);
-				else
+				if(j!=1)
 					printf("%3d", a[i][j]);
+				else
+					printf("%d",a[i][j]);
 			}
 			printf("\n");
 		}
 	}
-	
-	system("pause");
+
+	//system("pause");
 	return 0;
 }
