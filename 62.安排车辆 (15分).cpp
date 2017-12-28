@@ -18,3 +18,57 @@
 // 
 // 	Êä³öÑùÀý
 // 	3
+#include <cstdio>
+#include <iostream>
+#include <string>
+#include <cstring>
+using namespace std;
+
+int sum[101]={0};
+
+struct fangkuai
+{
+	int L,R;
+	int num;
+};
+
+int main()
+{
+	int N;
+	fangkuai a[101];
+	int b[101];
+	while(scanf("%d",&N)!=EOF)
+	{
+		int m=0;
+		for(int i=0; i<N; i++)
+		{
+			cin>>a[i].L>>a[i].R;
+			a[i].num=0;
+		}
+		int max=0;
+		for(int i=0; i<N; i++)
+		{
+			max = sum[a[i].L];
+			for(int j=a[i].L; j<=a[i].R; j++)
+			{
+				sum[j]++;
+				if(sum[j]>max)
+					max = sum[j];
+			}
+			for(int k=a[i].L; k<=a[i].R; k++)
+			{
+				sum[k]=max;
+			}
+			b[m++]=max;
+		}
+		int MAX=b[0];
+		for(int i=0; i<m; i++)
+		{
+			if(b[i]>MAX)
+				MAX=b[i];
+		}
+		cout<<MAX<<endl;
+
+	}
+	return 0;
+}

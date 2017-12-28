@@ -25,3 +25,77 @@
 // 
 // 	Êä³öÑùÀı
 // 	Y
+#include<iostream>  
+#include<cstdio>  
+#include<string>
+using namespace std;  
+int A,B,C;  
+void A_to_B(int &a,int &b,int &c)  
+{  
+	if(a>=B)  
+	{  
+		a=a-B;  
+		b=B;  
+	}  
+	else  
+	{  
+		b=a;  
+		a=0;  
+	}  
+
+	//cout<<a<<' '<<b<<' '<<c<<endl;  
+}  
+void B_to_C(int &a,int &b,int &c)  
+{  
+	if(b>=C)  
+	{  
+		b=b-(C-c);  
+		c=C;  
+	}  
+
+	else  
+	{  
+		c=b;  
+		b=0;  
+	}  
+	//cout<<a<<' '<<b<<' '<<c<<endl;  
+}  
+
+void C_to_A(int &a,int &b,int &c)  
+{  
+	a=a+c;  
+	c=0;  
+	//cout<<a<<' '<<b<<' '<<c<<endl;  
+}  
+
+
+int main()  
+{  
+	int a,b,c,t;  
+	int s_a,s_b,s_c; 
+	bool end = true;
+	scanf("%d,%d,%d,%d,%d,%d,%d",&A,&B,&C,&a,&b,&c,&t);  
+	s_a=a;  
+	s_b=b;  
+	s_c=c;  
+	while(a!=t&&b!=t&&c!=t)  
+	{  
+		if(b==0)  
+			A_to_B(a,b,c);  
+		if(c==C)  
+			C_to_A(a,b,c);  
+		else if(b!=0)  
+			B_to_C(a,b,c);  
+		if(a==s_c&&b==s_b&&c==s_c)  
+		{  
+			end = false; 
+			break;  
+		}  
+	} 
+	if(end)
+		cout<<"Y"<<endl;
+	else
+		cout<<"N"<<endl;
+	system("pause");
+	return 0;  
+}  
