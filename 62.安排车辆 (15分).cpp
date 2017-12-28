@@ -18,6 +18,7 @@
 // 
 // 	Êä³öÑùÀý
 // 	3
+/*
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -37,12 +38,11 @@ int main()
 	int N;
 	fangkuai a[101];
 	int b[101];
-	while(scanf("%d",&N)!=EOF)
-	{
+	scanf("%d",&N);
 		int m=0;
 		for(int i=0; i<N; i++)
 		{
-			cin>>a[i].L>>a[i].R;
+			scanf("%d,%d",&a[i].L,&a[i].R);
 			a[i].num=0;
 		}
 		int max=0;
@@ -68,7 +68,51 @@ int main()
 				MAX=b[i];
 		}
 		cout<<MAX<<endl;
+		system("pause");
+	return 0;
+}
+*/
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string>
+using namespace std;
+
+struct node
+{
+	int a,b;
+}a[100];
+
+bool cmp(node s,node f)
+{
+	return s.b<f.b;
+}
+int main()
+{
+	int s,f,n,ans=1,i;
+	int temp;
+	cin>>n;
+	for(i=0;i<n;i++)
+	{
+		scanf("%d,%d",&s,&f);
+		a[i].a=s;
+		a[i].b=f;
 
 	}
+	ans=0;
+	sort(a,a+n,cmp);
+	i=1;
+	temp=a[0].b;
+	for(i=1;i<n;i++)
+	{
+		if(a[i].a<=temp)
+		{
+			temp=a[i].b;
+			ans++;
+		}
+	}
+
+	cout<<ans<<endl;
+	system("pause");
 	return 0;
 }
