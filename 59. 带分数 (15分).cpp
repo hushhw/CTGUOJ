@@ -88,6 +88,7 @@ int main()
 
 	int n;  
 	cin>>n;  
-	cout<<cnt[n];  
-
+	cout<<cnt[n]; 
+	system("pause");
+	return 0;
 }  
