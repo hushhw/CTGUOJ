@@ -29,5 +29,4 @@ int main(){
 		fun(a[i]);  
 	}  
 	return 0;  
-	return 0;
 }
