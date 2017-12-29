@@ -74,6 +74,8 @@ void dfs()
 			}
 		}
 	}
+	if(head == tail)    //Œ¥’“µΩ
+		cout << 0;
 }
 
 int main()
@@ -91,6 +93,6 @@ int main()
 	}
 	cin>>x>>y;
 	dfs();
-	//system("pause");
+	system("pause");
 	return 0;
 }

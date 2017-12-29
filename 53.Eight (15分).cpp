@@ -20,6 +20,85 @@
 	// 
 	// 	输出样例
 	// 	4
+#include <iostream>
+#include <cstdio>
+#include <set>
+#include <string>
+using namespace std;
+
+typedef int State[9];             //定义状态类型
+const int maxstate = 10000000;     
+int goal[9]={
+	1, 2, 3,
+	8, 0, 4,
+	7, 6, 5
+};
+State st[maxstate];               //状态数组，保存所有状态
+int dist[maxstate];               //距离数组   
+//如果需要打印方案，可以在这里加一个"父亲编号"数组int fa[maxstatue]
+const int dx[] = {-1, 1, 0, 0};
+const int dy[] = {0, 0, -1, 1};
+
+set<int> vis;
+void init_lookup_table(){
+	vis.clear();
+}
+int try_to_insert(int s){
+	int v = 0;
+	for(int i = 0; i < 9; i++)
+		v = v * 10 + st[s][i];
+	if(vis.count(v))
+		return 0;
+	vis.insert(v);
+	return 1;
+}
+
+int bfs(){                       //bfs,返回目标状态在st数组下标
+	init_lookup_table();         //初始化查找表
+	int front = 1, rear =  2;    //不使用下标0，因为0被看作“不存在”
+	while(front < rear){
+		State& s = st[front];   //用引用简化代码          
+		if(memcmp(goal, s, sizeof(s)) == 0)
+			return front;            //找到目标状态，成功返回
+		int z;
+		for(z = 0; z < 9; z++)        //找到0的位置
+			if(!s[z])
+				break;
+		int x = z / 3, y = z % 3;
+		for(int d = 0; d < 4; d++){
+			int newx = x + dx[d];
+			int newy = y + dy[d];
+			int newz = newx * 3 + newy;
+			if(newx >= 0 && newx < 3 && newy >= 0 && newy < 3){   //判断是否移动合法
+				State& t = st[rear];
+				memcpy(&t, &s, sizeof(s));   //扩展新结点
+				t[newz] = s[z];
+				t[z] = s[newz];
+				dist[rear] = dist[front] + 1; //更新新结点的距离值
+				if(try_to_insert(rear))
+					rear++;
+			}
+		}       
+		front++; //扩展完毕再修改对首指针
+		//      cout << front << " ";
+	}
+	return 0;    //失败   
+}
+
+int main(){
+	for(int i = 0; i < 9; i++)
+		cin >> st[1][i];
+	for(int i = 0; i < 9; i++)
+		cin >> goal[i];
+	int ans = bfs();
+	if(ans > 0)
+		cout << dist[ans] ;
+	else
+		cout << -1;
+
+	return 0;
+}
+/*
 #include<stdio.h>  
 #include<string.h>  
 #include<iostream>  
@@ -142,6 +221,7 @@ int cantor(char str[]){
 
 	return ans;  
 }  
+*/
 /*
 //错误版本
 #include <cstdio>

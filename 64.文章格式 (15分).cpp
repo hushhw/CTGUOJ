@@ -23,6 +23,102 @@
 	// 	dependencies and XML
 	// 	keys are        also
 	// 	discussed
+/*
+超时，还有一点点没有完善的代码。。。
+#include <cstdio>
+#include <iostream>
+#include <string>
+using namespace std;
+
+string str;
+string s[101];
+int len[101];
+
+void print(int head, int tail)
+{
+	int sum=0;
+	if(tail-head==0)
+		cout<<s[tail]<<endl;
+	else
+	{
+		for(int i=head; i<tail; i++)
+		{
+			cout<<s[i]<<" ";
+			sum += len[i]+1;
+		}
+		sum = 20 - sum - len[tail];
+		//cout<<sum;
+		while(sum)
+		{
+			cout<<" ";
+			sum--;
+		}
+		cout<<s[tail]<<endl;
+	}
+	return;
+}
+
+int main()
+{
+	char c;
+	//getchar();
+	int i=0, j;
+	while(c = getchar())
+	{
+		
+		if(c=='\n')
+		{
+			s[i] = str;
+			len[i] = s[i].length();
+			str = "";
+			//cout<<"len:"<<len[i]<<endl;
+			//cout<<"s[i]:"<<s[i]<<endl;
+			//cout<<i<<endl;
+			i++;
+			break;
+		}
+		if(c==' ')
+		{
+			s[i] = str;
+			len[i] = s[i].length();
+			str = "";
+			//cout<<"len:"<<len[i]<<endl;
+			//cout<<"s[i]:"<<s[i]<<endl;
+			i++;
+			continue;
+		}
+		str = str + c;
+		//cout<<"str:"<<str<<endl;
+	}
+	int num=0,head,tail;
+	//cout<<i<<endl;
+
+	for(j=0; j<i; j++)
+	{
+		cout<<j<<endl;
+		if(num==0)
+			head = j;
+		num +=len[j];
+		if(num==20)
+		{
+			tail = j;
+			print(head, tail);
+			num = -1;
+		}
+		if(num>20)
+		{
+
+			tail = j;
+			print(head, tail-1);
+			j--;
+			num = -1;
+		}
+		num++;
+	}
+	system("pause");
+	return 0;
+}
+*/
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -30,86 +126,60 @@ using namespace std;
 
 int main()
 {
-	string str;
-	string s[101];
-	int len[101];
-	char c;
-	getchar();
-	int i=0;
-	while(c = getchar())
+	char word[128][21]={'\0'},ch;
+	int words = 0,i;	
+	int startPos,spaces;
+	ch = getchar();
+	while(ch!='\n')
 	{
-		
-		if(c=='\n')
+		while(ch==' ')
+			ch=getchar();
+		i=0;
+		while((ch!=' ')&&(ch!='\n'))
 		{
-			s[i++] = str;
-			len[i] = str.length();
-			str = "";
-			cout<<s[i]<<endl;
-			break;
+			word[words][i++] = ch;
+			ch=getchar();
 		}
-		if(c==' ')
-		{
-			s[i++] = str;
-			len[i] = str.length();
-			str = "";
-			cout<<s[i]<<endl;
-			continue;
-		}
-		str += c;
+		word[words][i] = '\0';
+		words++;
 	}
-	s[i++] = str;
-	len[i] = str.length();
-
-	int num = 0;
-	for(int j=0; i<i; j++)
+	startPos = 0;
+	for(i=0; i<words; i++)
 	{
-		num+=len[i];
-		if(num==20)
+		int length=0,curwords=0;
+		while(length<20&&i<words)
 		{
-			int sum = 0;
-			for(int m=0; m<=j; m++)
+			length+=strlen(word[i]);
+			if(length>20 || length+curwords>20)
 			{
-				if(m!=j)
-				{
-					cout<<"sss"<<endl;
-					printf("%s",s[i]);
-					sum += len[i]+1;
-				}
-				else
-				{
-					int sum = 20 - sum;
-					while(sum)
-					{
-						cout<<" ";
-						sum--;
-					}
-					printf("%s\n",s[i]);
-				}
+				length -=strlen(word[i]);
+				break;
 			}
+			i++,curwords++;
 		}
-		else if(num>20)
+		i--;
+		if(curwords>=1)
+			spaces=20-length;
+		int j=startPos;
+		do{
+			printf("%s",word[j]);
+			putchar(' ');
+			spaces--;
+		}while(++j<startPos+curwords-1);
+		if(curwords>1)
 		{
-			int sum = 0;
-			for(int m=0; m<j; m++)
-			{
-				if(m!=j-1)
-				{
-					cout<<"sss"<<endl;
-					printf("%s",s[i]);
-					sum += len[i]+1;
-				}
-				else
-				{
-					int sum = 20 - sum;
-					while(sum)
-					{
-						cout<<" ";
-						sum--;
-					}
-					printf("%s\n",s[i]);
-				}
-			}
-		}	
+			for(int k=0;k<spaces;k++)
+				putchar(' ');
+			printf("%s",word[startPos+curwords-1]);
+		}
+		if(curwords==1)
+		{
+			for(int k=0;k<spaces;k++)
+				putchar(' ');
+		}
+		putchar('\n');
+
+		startPos += curwords;
 	}
 	system("pause");
 	return 0;
